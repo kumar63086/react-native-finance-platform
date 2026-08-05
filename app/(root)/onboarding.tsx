@@ -47,57 +47,15 @@ export default function OnboardingScreen() {
     setSaving(true);
     setError("");
 
-    const { error: updateError } = await authSupabase
-      .from("users")
-      .update({
-        currency: selectedCurrency.code,
-      })
-      .eq("clerk_id", user!.id);
-
-    if (updateError) {
-      setSaving(false);
-      setError("Something went wrong. Please try again.");
-      return;
-    }
-
-    const { data: defaultAccount, error: accountFetchError } = await authSupabase
-      .from("accounts")
-      .select("id, balance")
-      .eq("user_id", user!.id)
-      .eq("is_default", true)
-      .single();
-
-    if (accountFetchError || !defaultAccount) {
-      setSaving(false);
-      setError("Something went wrong. Please try again.");
-      return;
-    }
-
-    const { error: txError } = await authSupabase.from("transactions").insert({
-      user_id: user!.id,
-      account_id: defaultAccount.id,
-      type: "INCOME",
-      amount: parsed,
-      category: "other_income",
-      description: "Starting balance",
-      date: new Date().toISOString(),
-      input_method: "MANUAL",
+    const { error: rpcError } = await authSupabase.rpc("complete_onboarding", {
+      p_currency: selectedCurrency.code,
+      p_starting_balance: parsed,
     });
-
-    if (txError) {
-      setSaving(false);
-      setError("Something went wrong. Please try again.");
-      return;
-    }
-
-    const { error: balanceError } = await authSupabase
-      .from("accounts")
-      .update({ balance: defaultAccount.balance + parsed })
-      .eq("id", defaultAccount.id);
 
     setSaving(false);
 
-    if (balanceError) {
+    if (rpcError) {
+      console.error("Onboarding error:", rpcError);
       setError("Something went wrong. Please try again.");
       return;
     }
