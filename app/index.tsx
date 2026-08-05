@@ -1,11 +1,8 @@
-import { Text, View } from "react-native";
+import { Redirect } from "expo-router";
+
 
 export default function Index() {
   return (
-    <View
-      
-    >
-      <Text>I am learin  native Mobiles apps</Text>
-    </View>
+    <Redirect href="/(root)/(tabs)"/>
   );
 }
