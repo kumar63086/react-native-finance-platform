@@ -4,7 +4,7 @@ import { ActivityIndicator, Image, KeyboardAvoidingView, Platform, Text, TextInp
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { codeSchema, SignUpFormValues, signUpSchema } from "../lib/schemas/auth";
+import { codeSchema, SignUpFormValues, signUpSchema } from "@/lib/schemas/auth";
 
 export default function SignUpScreen() {
     const { signUp,errors,fetchStatus } = useSignUp() 

@@ -1,4 +1,5 @@
 
+import { codeSchema, SignInFormValues, signInSchema } from "@/lib/schemas/auth";
 import { useSignIn } from "@clerk/expo";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useRouter } from "expo-router";
@@ -14,7 +15,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { codeSchema, SignInFormValues, signInSchema } from "../lib/schemas/auth";
+
 
 export default function SignIn() {
   const { signIn, errors, fetchStatus } = useSignIn();
