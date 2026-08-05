@@ -32,14 +32,14 @@ export const useUserSync = () => {
           return;
         }
 
-        const email = user.emailAddresses[0].emailAddress;
+        const email = user.primaryEmailAddress?.emailAddress;
 
         const { data: newUser, error: insertError } = await authSupabase
           .from("users")
           .upsert(
             {
               clerk_id: user.id,
-              email,
+              ...(email ? { email } : {}),
               name: `${user.firstName ?? ""} ${user.lastName ?? ""}`.trim(),
               image_url: user.imageUrl,
             },
